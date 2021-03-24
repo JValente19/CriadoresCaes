@@ -9,7 +9,7 @@ namespace CriadoresCaes.Models{
     /// <summary>
     /// 
     /// </summary>
-    public class CriadoresCaes{
+    public class CriadoresDeCaes{
 
 
         /// <summary>

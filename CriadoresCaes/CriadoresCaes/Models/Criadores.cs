@@ -12,7 +12,7 @@ namespace CriadoresCaes.Models{
 
         // inicializar a lista de Cães do Criador
         public Criadores(){
-            ListaDeCaes = new HashSet<CriadoresCaes>();
+            ListaDeCaes = new HashSet<CriadoresDeCaes>();
         }
 
         /// <summary>
@@ -51,6 +51,6 @@ namespace CriadoresCaes.Models{
         /// <summary>
         /// lista dos Cães associados ao Criador
         /// </summary>
-        public ICollection<CriadoresCaes> ListaDeCaes { get; set; }
+        public ICollection<CriadoresDeCaes> ListaDeCaes { get; set; }
     }
 }
