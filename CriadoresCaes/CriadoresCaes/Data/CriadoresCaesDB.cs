@@ -11,6 +11,8 @@ namespace CriadoresCaes.Data{
     /// </summary>
     public class CriadoresCaesDB : DbContext {
 
+        // Install-Package Microsoft.EntityFrameworkCore -version 5.0.4
+
         // Construtor da classe CriadoresCaesDB
         // Indicar onde está a DB à qual estas classes (tabelas) serão associadas
         // ver o conteúdo do ficheiro 'startup.cs'

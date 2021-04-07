@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,6 +19,7 @@ namespace CriadoresCaes.Models{
         /// <summary>
         /// identificador de cada uma das Raças
         /// </summary>
+        [Key] // identifica este atributo a uma FK
         public int Id { get; set; }
 
         /// <summary>
