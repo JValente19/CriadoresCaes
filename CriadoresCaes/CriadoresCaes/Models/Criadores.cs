@@ -26,6 +26,7 @@ namespace CriadoresCaes.Models{
         /// <summary>
         /// Nome do Criador
         /// </summary>
+        [Required]
         public string Nome { get; set; }
 
         /// <summary>
@@ -36,22 +37,24 @@ namespace CriadoresCaes.Models{
         /// <summary>
         /// Morada do Criador
         /// </summary>
+        [Required]
         public string Morada { get; set; }
 
         /// <summary>
         /// Código postal do Criador
         /// </summary>
+        [Required]
         public string CodigoPostal { get; set; }
 
         /// <summary>
         /// Telemovel do Criador
         /// </summary>
-        public string Telemovel { get; set; }
+        public string Telemovel { get; set; } // ou se escreve o Telemóvel, ou o Email, ou os dois...
 
         /// <summary>
         /// Email do Criador
         /// </summary>
-        public string Email { get; set; }
+        public string Email { get; set; } // ou se escreve o Telemóvel, ou o Email, ou os dois...
 
         // #######################################################
 
