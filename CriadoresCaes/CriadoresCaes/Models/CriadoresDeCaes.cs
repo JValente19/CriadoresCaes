@@ -29,7 +29,7 @@ namespace CriadoresCaes.Models{
         /// // FK para o Cão do Criador
         /// </summary>
         [ForeignKey(nameof(Cao))]
-        public int CaesFK { get; set; }
+        public int CaoFK { get; set; }
         public Caes Cao { get; set; }
 
         /// <summary>
