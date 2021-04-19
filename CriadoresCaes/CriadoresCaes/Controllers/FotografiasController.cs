@@ -72,9 +72,31 @@ namespace CriadoresCaes.Controllers
         }
 
         // GET: Fotografias/Create
-        public IActionResult Create()
-        {
-            ViewData["CaoFK"] = new SelectList(_context.Caes, "Id", "Id");
+        // [HttpGet]   não preciso desta definição, pois por omissão ele responde sempre em GET
+        /// <summary>
+        /// invoca, na primeira vez, a View com os dados de criação de uma fotografia
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Create(){
+
+            /* geração da lista de valores disponíveis na DropDown
+            * o ViewData transporta dados a serem associados ao atributo 'CaoFK'
+            * o SelectList é um tipo de dados especial que serve para armazenar a lista
+            * de opções de um objeto do tipo <SELECT> do HTML
+            * Contém dois valores: ID + nome a ser apresentado no ecrã
+            * 
+            * _context.Caes : representa a fonte dos dados
+            *                 na prática estamos a executar o comando SQL
+            *                 SELECT * FROM Caes
+            *                 
+            * vamos alterar a pesquisa para significar
+            * SELECT * FROM Caes ORDER BY Nome
+            * e a minha expressão fica: _context.Caes.OrderBy(c=>c.Nome)
+            * 
+            */
+            ViewData["CaoFK"] = new SelectList(_context.Caes.OrderBy(c=>c.Nome), "Id", "Nome");
+
+
             return View();
         }
 
@@ -83,16 +105,33 @@ namespace CriadoresCaes.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Fotografia,DataFoto,LocalFoto,CaoFK")] Fotografias fotografias)
-        {
-            if (ModelState.IsValid)
+        public async Task<IActionResult> Create([Bind("Id,Fotografia,DataFoto,LocalFoto,CaoFK")] Fotografias foto){
+
+            // avaliar se o utilizador escolheu uma opção válida na dropdown do Cão
+            if (foto.CaoFK > 0)
             {
-                _context.Add(fotografias);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    try
+                    {
+                        _context.Add(foto);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
+                    catch (Exception)
+                    {
+                        ModelState.AddModelError("", "Ocorreu um erro...");
+
+                    }
+                }
             }
-            ViewData["CaoFK"] = new SelectList(_context.Caes, "Id", "Id", fotografias.CaoFK);
-            return View(fotografias);
+            else{
+                // não foi escolhido um cão válido
+                ModelState.AddModelError("", "Não se sesqueca de selecionar um cão");
+            }
+
+            ViewData["CaoFK"] = new SelectList(_context.Caes.OrderBy(c => c.Nome), "Id", "Nome", foto.CaoFK);
+            return View(foto);
         }
 
         // GET: Fotografias/Edit/5
