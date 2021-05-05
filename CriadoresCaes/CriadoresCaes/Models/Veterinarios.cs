@@ -23,7 +23,28 @@ namespace CriadoresCaes.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string Id { get; set; }
 
+        /// <summary>
+        /// nome do Veterinário
+        /// </summary>
         public string Nome { get; set; }
+
+        /// <summary>
+        /// montante cobrado pelo Veterinário
+        /// </summary>
+        public decimal Honorarios { get; set; }
+
+        /// <summary>
+        /// atributo auxiliar para receber o valor dos honorários do Veterinário
+        /// </summary>
+        [NotMapped] // este atributo não vai ser adicionado à BD
+        [Required]
+        [Display(Name ="Honorários")]
+        [RegularExpression("[0..9]+[.,]?[0-9]{0,2}")] // formata a texbox para só aceitar valores decimais
+        // [RegularExpression("[0..9]+([.,]?[0-9]{2})?")] ---> outra alternativa
+        public string HonorarioAux { get; set; }
+
+
+
 
         //*******************************************************
         // identificar os cães que são tratados pelo Veterinário
