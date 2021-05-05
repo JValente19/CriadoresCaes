@@ -103,7 +103,7 @@ namespace CriadoresCaes.Data{
         public DbSet<Racas> Racas { get; set; }
         public DbSet<Fotografias> Fotografias { get; set; }
         public DbSet<CriadoresDeCaes> CriadoresCaes { get; set; }
-
+        public DbSet<Veterinarios> Veterinarios { get; set; }
 
     }
 }
