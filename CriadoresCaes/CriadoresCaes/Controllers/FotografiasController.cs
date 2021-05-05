@@ -219,13 +219,19 @@ namespace CriadoresCaes.Controllers
                 return NotFound();
             }
 
-            var fotografias = await _context.Fotografias.FindAsync(id);
-            if (fotografias == null)
+            var fotografia = await _context.Fotografias.FindAsync(id);
+            if (fotografia == null)
             {
                 return NotFound();
             }
-            ViewData["CaoFK"] = new SelectList(_context.Caes, "Id", "Id", fotografias.CaoFK);
-            return View(fotografias);
+            ViewData["CaoFK"] = new SelectList(_context.Caes.OrderBy(c => c.Nome), "Id", "Nome", fotografia.CaoFK);
+
+            // guardar o ID do objeto enviado para o browser
+            // através de uma variavel de sessão
+            HttpContext.Session.SetInt32("NumFotoEmEdicao", fotografia.Id);
+            // Session["idFoto"] = fotografias.Id;
+
+            return View(fotografia);
         }
 
         // POST: Fotografias/Edit/5
@@ -233,23 +239,42 @@ namespace CriadoresCaes.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Fotografia,DataFoto,LocalFoto,CaoFK")] Fotografias fotografias)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Fotografia,DataFoto,LocalFoto,CaoFK")] Fotografias foto)
         {
-            if (id != fotografias.Id)
+            if (id != foto.Id)
             {
                 return NotFound();
             }
+
+
+            // Recuperar o ID do objeto  enviado para o browser
+            var numIdFoto = HttpContext.Session.GetInt32("NumFotoEmEdicao");
+            // e compará-lo com o ID recebido
+            // se forem iguais, continuamos
+            //se forem diferentes, não fazemos a alteração
+
+            if (numIdFoto == null || numIdFoto != foto.Id) {
+                // se entro aqui, é pq houve problemas
+
+                // redirecionar para a página de início
+                return RedirectToAction("Index");
+
+            }
+
+
+
+
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(fotografias);
+                    _context.Update(foto);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FotografiasExists(fotografias.Id))
+                    if (!FotografiasExists(foto.Id))
                     {
                         return NotFound();
                     }
@@ -260,8 +285,8 @@ namespace CriadoresCaes.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CaoFK"] = new SelectList(_context.Caes, "Id", "Id", fotografias.CaoFK);
-            return View(fotografias);
+            ViewData["CaoFK"] = new SelectList(_context.Caes, "Id", "Id", foto.CaoFK);
+            return View(foto);
         }
 
         // GET: Fotografias/Delete/5

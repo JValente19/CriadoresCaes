@@ -22,8 +22,18 @@ namespace CriadoresCaes{
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        // This method gets called by the runtime.
+        // Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services){
+
+            // uso de vars. de sessão
+            services.AddDistributedMemoryCache();
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
             services.AddControllersWithViews();
 
             //***************************************************************************
@@ -38,7 +48,8 @@ namespace CriadoresCaes{
 
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // This method gets called by the runtime.
+        // Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env){
             if (env.IsDevelopment()){
                 app.UseDeveloperExceptionPage();
@@ -52,6 +63,9 @@ namespace CriadoresCaes{
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            // permitir o uso de vars. de sessão
+            app.UseSession();
 
             app.UseAuthorization();
 
